@@ -1,0 +1,17 @@
+- name: Advanced Workstation Setup
+  hosts: localhost
+  become: true
+
+  pre_tasks:
+    - name: Include profile
+      include_vars: "{{ profile | default('profiles/full.yml') }}"
+
+  roles:
+    - { role: base }
+    - { role: browser, when: install.browser }
+    - { role: messenger, when: install.messenger }
+    - { role: multimedia, when: install.multimedia }
+    - { role: dev, when: install.dev }
+    - { role: gaming, when: install.gaming }
+    - { role: virtualization, when: install.virtualization }
+    - { role: tools }
