@@ -1,0 +1,5 @@
+- name: Add Packman repo
+  community.general.zypper_repository:
+    name: packman
+    repo: https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Leap_15.6/
+    state: present
