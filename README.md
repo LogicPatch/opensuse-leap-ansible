@@ -217,6 +217,14 @@ suse | SUCCESS => {
 If this succeeds, the environment is fully ready for automation.
 
 
+## 🚧 Notes
+
+- This setup is intended for a controlled lab environment
+- SSH key authentication is required for unattended execution
+- Inventory should be adapted for each target system
+- Playbooks are designed to be idempotent
+
+
 ---
 
 
@@ -243,13 +251,80 @@ ansible-playbook playbooks/gnome.yaml
 ansible-playbook playbooks/applications.yaml
 ```
 
+---
 
-# 🚧 Notes
+# 🧩 Repository Strategy (openSUSE)
 
-- This setup is intended for a controlled lab environment
-- SSH key authentication is required for unattended execution
-- Inventory should be adapted for each target system
-- Playbooks are designed to be idempotent
+This project configures a modular repository setup for openSUSE Leap systems.
+
+The goal is to provide a clean separation between:
+
+- base system repositories (OSS)
+- multimedia extensions (Packman)
+- hardware drivers (NVIDIA)
+- optional codec support (libdvdcss)
+
+
+## 📚 Available Repositories
+
+| Repository | Purpose | Recommended |
+|------------|---------|-------------|
+| OSS (default) | Base system packages | ✔ always enabled |
+| Packman | Multimedia codecs, ffmpeg, GStreamer replacements | ✔ recommended |
+| libdvdcss | DVD playback support | optional |
+| NVIDIA | Proprietary GPU drivers | optional (NVIDIA GPUs only) |
+
+## ⚙️ Repository Configuration (Ansible Variables)
+
+Repositories can be enabled via `group_vars/opensuse.yaml`:
+
+```yaml
+repositories:
+  packman: true
+  libdvdcss: true
+  nvidia: false
+```
+
+
+## 🔄 Update Strategy (Important)
+
+openSUSE distinguishes between two update modes:
+
+### 🟢 Safe updates (default)
+
+```bash
+zypper ref
+zypper up
+```
+- updates packages within the same vendor
+- safest option for stable systems
+- recommended for daily usage
+
+### 🔴 Full system sync (advanced)
+
+```bash
+zypper ref
+zypper dup --allow-vendor-change
+```
+- performs a full distribution upgrade
+- resolves package conflicts across different repositories
+- required when using Packman or other third-party repositories
+- ensures consistent multimedia and driver stack alignment
+
+## ⚠️ Important Note
+
+After enabling additional repositories (e.g. Packman, NVIDIA, multimedia repositories),  
+`zypper up` may still show available updates.
+
+These updates are intentionally withheld to avoid vendor conflicts between different repositories.
+
+This is not an error, but a design decision of openSUSE's package management system.
+
+To fully apply these updates and align all packages across repositories, a distribution upgrade is required:
+
+`zypper dup --allow-vendor-change`
+
+
 
 ---
 

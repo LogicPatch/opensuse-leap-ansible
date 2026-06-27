@@ -1,5 +1,46 @@
-- name: Add Packman repo
-  community.general.zypper_repository:
-    name: packman
-    repo: https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Leap_15.6/
-    state: present
+- name: Configure repositories
+  hosts: opensuse
+  become: true
+
+  tasks:
+    - name: Add Packman repository
+      community.general.zypper_repository:
+        name: packman
+        repo: "https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Leap_16.0/"
+        priority: 90
+        auto_import_keys: true
+        state: present
+      when: repositories.packman
+
+    - name: Add libdvdcss repository
+      community.general.zypper_repository:
+        name: libdvdcss
+        repo: "https://download.opensuse.org/repositories/multimedia:/libs/16.0/"
+        #repo: "http://opensuse-guide.org/repo/openSUSE_Leap_16.0/"
+        priority: 115
+        auto_import_keys: true
+        state: present
+      when: repositories.libdvdcss
+
+    - name: Add NVIDIA repository
+      community.general.zypper_repository:
+        name: nvidia
+        repo: "https://download.nvidia.com/opensuse/leap/16.0"
+        priority: 115
+        auto_import_keys: true
+        state: present
+      when: repositories.nvidia
+
+    - name: Refresh repositories
+      command: zypper ref
+
+    - name: Update all installed packages
+      community.general.zypper:
+        name: '*'
+        state: dist-upgrade
+        update_cache: true
+        allow_vendor_change: true
+
+#    - name: Full distribution sync
+#      command: zypper dup -y --allow-vendor-change
+#      changed_when: false

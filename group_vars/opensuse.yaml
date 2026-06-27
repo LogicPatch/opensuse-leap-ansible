@@ -1,0 +1,4 @@
+repositories:
+  packman: true
+  libdvdcss: true
+  nvidia: true
