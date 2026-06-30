@@ -1,4 +1,18 @@
 repositories:
   packman: true
-  libdvdcss: true
+  codecs: true
   nvidia: true
+
+base_system:
+  base_packages: true
+  flatpak: true
+  printing: true
+  wireless: true
+  laptop_optimization: true
+  nvidia_driver: false
+zram:
+  #size: "ram"            # <<< NOTEBOOK
+  size: "ram / 2"        # <<< DESKTOP
+  #size: "ram / 4"        # <<< SERVER
+  compression: "zstd"
+  priority: 100

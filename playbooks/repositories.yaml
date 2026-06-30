@@ -3,6 +3,9 @@
   become: true
 
   tasks:
+    # -----------------------------------
+    # Packman Repository
+    # -----------------------------------
     - name: Add Packman repository
       community.general.zypper_repository:
         name: packman
@@ -12,16 +15,29 @@
         state: present
       when: repositories.packman
 
-    - name: Add libdvdcss repository
+    # -----------------------------------
+    # Multimedia Codecs Repositories
+    # -----------------------------------
+    - name: Add multimedia repository
       community.general.zypper_repository:
-        name: libdvdcss
+        name: codecs
         repo: "https://download.opensuse.org/repositories/multimedia:/libs/16.0/"
-        #repo: "http://opensuse-guide.org/repo/openSUSE_Leap_16.0/"
         priority: 115
         auto_import_keys: true
         state: present
-      when: repositories.libdvdcss
+      when: repositories.codecs
+    - name: Add VideoLAN repository (libdvdcss)
+      community.general.zypper_repository:
+        name: videolan
+        repo: "https://download.videolan.org/pub/vlc/SuSE/16.0/"
+        priority: 115
+        auto_import_keys: true
+        state: present
+      when: repositories.codecs
 
+    # -----------------------------------
+    # Nvidia Repository
+    # -----------------------------------
     - name: Add NVIDIA repository
       community.general.zypper_repository:
         name: nvidia
