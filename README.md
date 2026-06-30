@@ -245,10 +245,10 @@ ansible-playbook site.yaml
 
 Or run individual components:
 ```bash
-ansible-playbook playbooks/repositories.yaml
-ansible-playbook playbooks/base-system.yaml
-ansible-playbook playbooks/gnome.yaml
-ansible-playbook playbooks/applications.yaml
+ansible-playbook playbooks/repositories.yaml -K
+ansible-playbook playbooks/base-system.yaml -K
+ansible-playbook playbooks/gnome.yaml -K
+ansible-playbook playbooks/applications.yaml -K
 ```
 
 ---
