@@ -1,0 +1,177 @@
+---
+- name: Configure base system
+  hosts: opensuse
+  become: true
+
+  vars_files:
+    - ../vars/base-system.yaml
+
+  tasks:
+
+    # -----------------------------------
+    # Base_System_Packages
+    # -----------------------------------
+    - name: Install base system packages
+      community.general.zypper:
+        name: "{{ base_system_packages }}"
+        state: present
+        disable_recommends: false           # false = install recommends Dependencies
+      when: base_system.base_packages
+      tags:
+        - base
+    - name: Enable base system services
+      ansible.builtin.service:
+        name: "{{ item }}"
+        enabled: true
+        state: started
+      loop:
+        - acpid
+        - sshd
+      when: base_system.base_packages
+      tags:
+        - base
+
+    # -----------------------------------
+    # Flatpak
+    # -----------------------------------
+    - name: Install Flatpak
+      community.general.zypper:
+        name: "{{ base_flatpak_packages }}"
+        state: present
+        disable_recommends: false           # false = install recommends Dependencies
+      when: base_system.flatpak
+      tags:
+        - flatpak
+    - name: Add Flathub remote
+      community.general.flatpak_remote:
+        name: flathub
+        state: present
+        flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
+      when: base_system.flatpak
+      tags:
+        - flatpak
+
+    # -----------------------------------
+    # Printing & Scanning
+    # -----------------------------------
+    - name: Install printing and scanning stack
+      community.general.zypper:
+        name: "{{ printing_scanning_packages }}"
+        state: present
+        disable_recommends: false           # false = install recommends Dependencies
+      when: base_system.printing
+      tags:
+        - printing
+
+    # -----------------------------------
+    # WLAN-Tools
+    # -----------------------------------
+    - name: Install wireless stack
+      community.general.zypper:
+        name: "{{ wireless_packages }}"
+        state: present
+        disable_recommends: false           # false = install recommends Dependencies
+      when: base_system.wireless
+      tags:
+        - wireless
+    - name: Ensure NetworkManager is active (network backend)
+      ansible.builtin.service:
+        name: NetworkManager
+        enabled: true
+        state: started
+      when: base_system.wireless
+      tags:
+        - wireless
+  
+    # -----------------------------------
+    # Laptop-packages
+    # -----------------------------------
+    - name: Install laptop optimization packages
+      community.general.zypper:
+        name: "{{ laptop_optimization_packages }}"
+        state: present
+        disable_recommends: false           # false = install recommends Dependencies
+      when: base_system.laptop_optimization
+      tags:
+        - laptop
+    - name: Configure zram-generator
+      ansible.builtin.template:
+        src: ../templates/zram-generator.conf.j2
+        dest: /etc/systemd/zram-generator.conf
+        owner: root
+        group: root
+        mode: "0644"
+      when: base_system.laptop_optimization
+      tags:
+        - laptop
+    - name: Reload systemd
+      ansible.builtin.systemd:
+        daemon_reload: true
+      when: base_system.laptop_optimization
+      tags:
+        - laptop
+    - name: Enable zram swap
+      ansible.builtin.service:
+        name: systemd-zram-setup@zram0
+        enabled: true
+        state: started
+      when: base_system.laptop_optimization
+      tags:
+        - laptop
+    - name: Enable TLP power management
+      ansible.builtin.service:
+        name: tlp
+        enabled: true
+        state: started
+      when: base_system.laptop_optimization
+      tags:
+        - laptop
+
+    # -----------------------------------
+    # nvidia-driver
+    # -----------------------------------
+    - name: Verify NVIDIA repository
+      ansible.builtin.command:
+        cmd: zypper lr nvidia
+      register: nvidia_repo
+      changed_when: false
+      failed_when: false
+      when: base_system.nvidia_driver
+      tags:
+        - nvidia
+    - name: Ensure NVIDIA repository is configured
+      ansible.builtin.fail:
+        msg: >
+          NVIDIA driver installation requested, but the NVIDIA repository
+          is not configured. Run repositories.yaml first or enable
+          repositories.nvidia.
+      when:
+        - base_system.nvidia_driver
+        - nvidia_repo.rc != 0
+      tags:
+        - nvidia
+    - name: Install NVIDIA driver
+      community.general.zypper:
+        name: "{{ nvidia_driver_packages }}"
+        state: present
+        disable_recommends: false           # false = install recommends Dependencies
+        auto_import_keys: true
+      environment:
+        ZYPP_ACCEPT_LICENSES: "1"
+      when:
+        - base_system.nvidia_driver
+        - nvidia_repo.rc == 0
+      tags:
+        - nvidia
+    - name: NVIDIA reboot notice
+      ansible.builtin.debug:
+        msg:
+          - "The NVIDIA kernel module becomes available after reboot."
+          - "Reboot the system before using the NVIDIA driver."
+          - "Verify the installation afterwards with:"
+          - "modinfo -F version nvidia"
+      when:
+        - base_system.nvidia_driver
+        - nvidia_repo.rc == 0
+      tags:
+        - nvidia
