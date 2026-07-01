@@ -41,7 +41,7 @@ base_flatpak_packages:
 
 printing_scanning_packages:
   - hplip 
-  - hplip-hpijs 
+#  - hplip-hpijs 
   - hplip-sane
   - system-config-printer
 
@@ -50,12 +50,14 @@ wireless_packages:
   - wireless-tools
   - wpa_supplicant
 
-laptop_packages:
+laptop_optimization_packages:
   - powertop
   - powertop-lang
   - tlp
   - zram-generator
 
 nvidia_driver_packages:
-  - nvidia-glG06
-  - x11-video-nvidiaG06
+  - kernel-firmware-nvidia
+  - nvidia-compute-G06
+  - nvidia-driver-G06-kmp-default
+  - nvidia-gl-G06

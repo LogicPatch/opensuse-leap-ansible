@@ -130,7 +130,7 @@
     # -----------------------------------
     # nvidia-driver
     # -----------------------------------
-    - name: Verify NVIDIA repository
+    - name: Check if NVIDIA repository exists
       ansible.builtin.command:
         cmd: zypper lr nvidia
       register: nvidia_repo
@@ -139,17 +139,19 @@
       when: base_system.nvidia_driver
       tags:
         - nvidia
-    - name: Ensure NVIDIA repository is configured
+    
+    - name: Fail if NVIDIA repository is missing
       ansible.builtin.fail:
         msg: >
           NVIDIA driver installation requested, but the NVIDIA repository
           is not configured. Run repositories.yaml first or enable
-          repositories.nvidia.
+          repositories.nvidia before continuing.
       when:
         - base_system.nvidia_driver
         - nvidia_repo.rc != 0
       tags:
         - nvidia
+    
     - name: Install NVIDIA driver
       community.general.zypper:
         name: "{{ nvidia_driver_packages }}"
@@ -163,15 +165,36 @@
         - nvidia_repo.rc == 0
       tags:
         - nvidia
-    - name: NVIDIA reboot notice
-      ansible.builtin.debug:
-        msg:
-          - "The NVIDIA kernel module becomes available after reboot."
-          - "Reboot the system before using the NVIDIA driver."
-          - "Verify the installation afterwards with:"
-          - "modinfo -F version nvidia"
+      
+    - name: Read installed NVIDIA module version
+      ansible.builtin.command:
+        cmd: modinfo -F version nvidia
+      register: nvidia_version
+      changed_when: false
+      failed_when: false
       when:
         - base_system.nvidia_driver
         - nvidia_repo.rc == 0
       tags:
         - nvidia
+    
+    - name: NVIDIA installation completed
+      ansible.builtin.debug:
+        msg:
+          - "NVIDIA driver version : {{ nvidia_version.stdout | default('not available') }}"
+          - "The NVIDIA kernel module becomes available after reboot."
+          - "Verify after reboot with:"
+          - "sudo modinfo -F version nvidia"
+          #- "The NVIDIA kernel module becomes available after reboot."
+          #- "Reboot the system before using the NVIDIA driver."
+          #- "Verify the installation afterwards with:"
+          #- "modinfo -F version nvidia"
+      when:
+        - base_system.nvidia_driver
+        - nvidia_repo.rc == 0
+      tags:
+        - nvidia
+    
+    - name: Debug NVIDIA version
+      ansible.builtin.debug:
+        var: nvidia_version

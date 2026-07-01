@@ -9,7 +9,7 @@ base_system:
   printing: true
   wireless: true
   laptop_optimization: true
-  nvidia_driver: false
+  nvidia_driver: true
 zram:
   #size: "ram"            # <<< NOTEBOOK
   size: "ram / 2"        # <<< DESKTOP
