@@ -1,0 +1,83 @@
+---
+- name: Configure Desktop & applications
+  hosts: opensuse
+  become: true
+
+  vars_files:
+    - ../vars/xfce.yaml
+    - ../vars/desktop-common.yaml
+
+  tasks:
+
+    #-------------------------------------------
+    # XFCE-Desktop and/or XFCE-Tools
+    #-------------------------------------------
+    - name: Install XFCE desktop & applications
+      community.general.zypper:
+        name: "{{ xfce_packages }}"
+        state: present
+      when: desktop.environment == "xfce"
+      tags:
+        - xfce          # installiert XFCE komplett inklusive LightDM
+        - desktop       # installiert alles rund um den Desktop.
+    #-------------------------------------------
+    # lightdm-Displaymanager installieren
+    #-------------------------------------------
+    - name: Install desktop display manager
+      community.general.zypper:
+        name: "{{ desktop_displaymanager[desktop.environment].packages }}"
+        state: present
+      tags:
+        - xfce            # installiert XFCE komplett inklusive LightDM
+        - displaymanager  # installiert bzw. wechselt nur den Displaymanager
+        - desktop         # installiert alles rund um den Desktop.
+    #-------------------------------------------
+    # Andere Displaymanager deaktivieren
+    #-------------------------------------------
+    - name: Gather service facts
+      ansible.builtin.service_facts:
+      tags:
+        - xfce            # installiert XFCE komplett inklusive LightDM
+        - displaymanager  # installiert bzw. wechselt nur den Displaymanager
+        - desktop         # installiert alles rund um den Desktop.
+    - name: Disable other display managers
+      ansible.builtin.systemd:
+        name: "{{ item }}"
+        enabled: false
+        state: stopped
+      loop:
+        - gdm
+        - lightdm
+        - sddm
+      when: 
+        - item != desktop_displaymanager[desktop.environment].service ~ ".service"
+        - item in ansible_facts.services
+      tags:
+        - xfce            # installiert XFCE komplett inklusive LightDM
+        - displaymanager  # installiert bzw. wechselt nur den Displaymanager
+        - desktop         # installiert alles rund um den Desktop.
+    #-------------------------------------------
+    # LightDM Displaymanager aktivieren
+    #-------------------------------------------
+    - name: Enable selected display manager
+      ansible.builtin.systemd:
+        name: "{{ desktop_displaymanager[desktop.environment].service }}"
+        enabled: true
+        state: started
+      tags:
+        - xfce            # installiert XFCE komplett inklusive LightDM
+        - displaymanager  # installiert bzw. wechselt nur den Displaymanager
+        - desktop         # installiert alles rund um den Desktop.
+
+    #-------------------------------------------
+    # Dateimanager installieren
+    #-------------------------------------------
+    - name: Install selected file managers
+      community.general.zypper:
+        name: "{{ filemanager_packages[item.key] }}"
+        state: present
+      loop: "{{ filemanager | dict2items }}"
+      when: item.value | bool
+      tags:
+        - filemanager
+        - desktop

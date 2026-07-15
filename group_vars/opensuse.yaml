@@ -16,3 +16,17 @@ zram:
   #size: "ram / 4"        # <<< SERVER
   compression: "zstd"
   priority: 100
+
+desktop:
+  #---Verfügbare Desktops---#
+  available:
+    - xfce
+    - gnome
+    - kde
+  #---Aktiv---#
+  environment: xfce
+
+filemanager:
+  nautilus: true
+  thunar: true
+  dolphin: true

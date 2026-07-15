@@ -1,0 +1,10 @@
+xfce_packages:
+  - patterns-xfce-xfce
+  - pavucontrol
+  - xfce4-notes-plugin
+  - xfce4-notes-plugin-lang
+  - xfce4-pulseaudio-plugin
+  - xfce4-terminal
+  - xinit
+  - xorg-x11-server
+
