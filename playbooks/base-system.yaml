@@ -30,6 +30,29 @@
       when: base_system.base_packages
       tags:
         - base
+    
+    # -----------------------------------
+    # Locale/Keyboard  DE_de
+    # -----------------------------------
+    ### Sprache
+    - name: Configure locale
+      ansible.builtin.command:
+        cmd: localectl set-locale LANG={{ localization.locale }}
+
+    ### Tastatur
+    - name: Configure console keyboard
+      ansible.builtin.command:
+        cmd: localectl set-keymap {{ localization.keymap }}
+
+    ### X11-Tastatur
+    - name: Configure X11 keyboard
+      ansible.builtin.command:
+        cmd: localectl set-x11-keymap {{ localization.x11_layout }}
+
+    ### Zeitzone
+    - name: Configure timezone
+      community.general.timezone:
+        name: "{{ localization.timezone }}"
 
     # -----------------------------------
     # Flatpak
@@ -198,3 +221,4 @@
     - name: Debug NVIDIA version
       ansible.builtin.debug:
         var: nvidia_version
+  
