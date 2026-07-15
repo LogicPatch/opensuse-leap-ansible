@@ -30,3 +30,8 @@ filemanager:
   nautilus: true
   thunar: true
   dolphin: true
+
+calendar:
+  gnome-calendar: true
+  korganizer: true
+  orage: true

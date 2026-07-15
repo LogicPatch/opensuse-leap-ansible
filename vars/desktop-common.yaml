@@ -154,3 +154,14 @@ filemanager_packages:
     - dolphin-part 
     - dolphin-part-lang 
     - libdolphinvcs6
+
+calendar_packages:
+  gnome-calendar:
+    - gnome-calendar 
+    - gnome-calendar-lang 
+  orage:
+    - orage 
+    - orage-lang 
+  korganizer:
+    - korganizer 
+    - korganizer-lang

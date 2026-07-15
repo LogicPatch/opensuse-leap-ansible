@@ -81,3 +81,16 @@
       tags:
         - filemanager
         - desktop
+    
+    #-------------------------------------------
+    # Kalenderapplication installieren
+    #-------------------------------------------
+    - name: Install selected calendar applications
+      community.general.zypper:
+        name: "{{ calendar_packages[item.key] }}"
+        state: present
+      loop: "{{ calendar | dict2items }}"
+      when: item.value | bool
+      tags:
+        - calendar
+        - desktop
