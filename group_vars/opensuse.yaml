@@ -35,3 +35,9 @@ calendar:
   gnome-calendar: true
   korganizer: true
   orage: true
+
+editor:
+  gnome_text_editor: true
+  kate: true
+  mousepad: true
+  geany: true

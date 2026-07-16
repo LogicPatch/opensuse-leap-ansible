@@ -94,3 +94,16 @@
       tags:
         - calendar
         - desktop
+    
+    #-------------------------------------------
+    # Editoren installieren
+    #-------------------------------------------
+    - name: Install selected editors
+      community.general.zypper:
+        name: "{{ editor_packages[item.key] }}"
+        state: present
+      loop: "{{ editor | dict2items }}"
+      when: item.value | bool
+      tags:
+        - editor
+        - desktop

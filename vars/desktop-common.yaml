@@ -165,3 +165,21 @@ calendar_packages:
   korganizer:
     - korganizer 
     - korganizer-lang
+
+editor_packages:
+  gnome_text_editor:
+    - gnome-text-editor 
+    - gnome-text-editor-lang
+  
+  mousepad:
+    - mousepad
+    - mousepad-lang
+  
+  kate:
+    - kate 
+    - kate-lang 
+    - kate-plugins
+  
+  geany:
+    - geany 
+    - geany-lang 
