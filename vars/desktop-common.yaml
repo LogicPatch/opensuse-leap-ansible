@@ -201,3 +201,23 @@ image_viewer_packages:
     - nomacs
     - nomacs-lang
     - nomacs-plugins
+
+pdf_viewer_packages:
+  papers:
+    - papers 
+    - papers-lang 
+    - papers-plugin-djvudocument 
+    - papers-plugin-pdfdocument 
+    - papers-plugin-tiffdocument
+  
+  okular:
+    - okular 
+    - okular-lang 
+    - okular-spectre
+  
+  evince:
+    - evince 
+    - evince-lang 
+    - evince-plugin-pdfdocument 
+    - evince-plugin-psdocument
+    - evince-plugin-djvudocument

@@ -47,3 +47,8 @@ image_viewer:
   ristretto: true
   gwenview: true
   nomacs: true
+
+pdf_viewer:
+  papers: true
+  okular: true
+  evince: true

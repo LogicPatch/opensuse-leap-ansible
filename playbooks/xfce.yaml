@@ -120,3 +120,16 @@
       tags:
         - imageviewer
         - desktop
+    
+    #-------------------------------------------
+    # PDF-Reader installieren
+    #-------------------------------------------
+    - name: Install selected PDF viewers
+      community.general.zypper:
+        name: "{{ pdf_viewer_packages[item.key] }}"
+        state: present
+      loop: "{{ pdf_viewer | dict2items }}"
+      when: item.value | bool
+      tags:
+        - pdf
+        - desktop
