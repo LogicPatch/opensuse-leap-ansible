@@ -107,3 +107,16 @@
       tags:
         - editor
         - desktop
+    
+    #-------------------------------------------
+    # Bildbetrachter installieren
+    #-------------------------------------------
+    - name: Install selected image viewers
+      community.general.zypper:
+        name: "{{ image_viewer_packages[item.key] }}"
+        state: present
+      loop: "{{ image_viewer | dict2items }}"
+      when: item.value | bool
+      tags:
+        - imageviewer
+        - desktop

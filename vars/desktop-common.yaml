@@ -182,4 +182,22 @@ editor_packages:
   
   geany:
     - geany 
-    - geany-lang 
+    - geany-lang
+
+image_viewer_packages:
+  loupe:
+    - loupe
+    - loupe-lang
+  
+  ristretto:
+    - ristretto
+    - ristretto-lang
+  
+  gwenview:
+    - gwenview
+    - gwenview-lang
+  
+  nomacs:
+    - nomacs
+    - nomacs-lang
+    - nomacs-plugins

@@ -33,11 +33,17 @@ filemanager:
 
 calendar:
   gnome-calendar: true
-  korganizer: true
   orage: true
+  korganizer: true
 
 editor:
   gnome_text_editor: true
-  kate: true
   mousepad: true
+  kate: true
   geany: true
+
+image_viewer:
+  loupe: true
+  ristretto: true
+  gwenview: true
+  nomacs: true
