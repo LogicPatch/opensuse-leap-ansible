@@ -221,3 +221,15 @@ pdf_viewer_packages:
     - evince-plugin-pdfdocument 
     - evince-plugin-psdocument
     - evince-plugin-djvudocument
+
+screenshot_packages:
+  xfce4_screenshooter:
+    - xfce4-screenshooter
+    - xfce4-screenshooter-lang
+
+  spectacle:
+    - spectacle
+    - spectacle-lang
+
+  flameshot:
+    - flameshot

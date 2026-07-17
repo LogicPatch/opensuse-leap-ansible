@@ -133,3 +133,16 @@
       tags:
         - pdf
         - desktop
+    
+    #-------------------------------------------
+    # Screenshot-Programme installieren
+    #-------------------------------------------
+    - name: Install selected screenshot applications
+      community.general.zypper:
+        name: "{{ screenshot_packages[item.key] }}"
+        state: present
+      loop: "{{ screenshot_tool | dict2items }}"
+      when: item.value | bool
+      tags:
+        - screenshot
+        - desktop

@@ -52,3 +52,8 @@ pdf_viewer:
   papers: true
   okular: true
   evince: true
+
+screenshot_tool:
+  xfce4_screenshooter: true
+  spectacle: true
+  flameshot: true
