@@ -47,15 +47,48 @@
         state: present
       when: repositories.nvidia
 
+    # -----------------------------------
+    # Repository update & Packman-Vendor-Switch
+    # -----------------------------------
     - name: Refresh repositories
       command: zypper ref
-
+    # -----------------------------------
+    # Remove known multimedia conflicts
+    # -----------------------------------
+    - name: Remove conflicting openSUSE multimedia thumbnail packages
+      community.general.zypper:
+        name:
+          - ffmpegthumbnailer
+          - libffmpegthumbnailer4
+        state: absent
+      when: repositories.packman
+      tags:
+        - repositories
+        - packman
+    # -----------------------------------
+    # Vendor-Switch to Packman
+    # -----------------------------------
+    - name: Switch multimedia packages to Packman
+      ansible.builtin.command:
+        cmd: zypper --non-interactive dup --from packman --allow-vendor-change
+      when: repositories.packman
+      register: packman_dup
+      changed_when: "'Nothing to do.' not in packman_dup.stdout"
+      tags:
+        - repositories
+        - packman
+    # -----------------------------------
+    # Normal Package-Update
+    # -----------------------------------
     - name: Update all installed packages
       community.general.zypper:
         name: '*'
         state: dist-upgrade
         update_cache: true
         allow_vendor_change: true
+      tags:
+        - repositories
+        - packman
 
 #    - name: Full distribution sync
 #      command: zypper dup -y --allow-vendor-change
