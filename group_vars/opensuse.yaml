@@ -57,3 +57,55 @@ screenshot_tool:
   xfce4_screenshooter: true
   spectacle: true
   flameshot: true
+
+applications:
+  firefox: true               # (war bereits installiert)
+  chromium: true
+  brave: true
+  google_chrome: true
+  thunderbird: true           # (war bereits installiert)
+  betterbird: true
+  geary: true
+  signal_desktop: true        # (Repository musste hinzugefügt werden)
+  telegram: true
+  viber: true
+  discord: true
+  # Microsoft Teams           # (2023.03.20 Nur noch die PWA ; Weboberfläche)
+  zoom: true
+  showtime: true
+  vlc: true
+  celluloid: true
+  parole: true
+  rhythmbox: true
+  musicpod: true
+  soundconverter: true
+  eyedropper: true
+  gcolor3: true
+  gimp: true
+  krita: true
+  kooha: true
+  handbrake: true
+  kdenlive: true
+  openshot: true
+  wine: true
+  steam: true
+  lutris: true
+  rustdesk: true
+  anydesk: true
+  teamviewer: true
+  ranger: true
+  yazi: true
+  zsh: true
+  #ghostty: true
+  kitty: true
+  urxvt: true
+  tilix: true
+  conky: true
+  zim: true
+  keepassxc: true
+  pycharm: true               # Entwicklungs-IDE
+  sublime: true               # (Nutzt die alte 3.x Version)
+  weechat: true
+  kvm: true
+  virtualbox: true
+  texlive_latex: true

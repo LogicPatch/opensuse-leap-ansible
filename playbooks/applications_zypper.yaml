@@ -1,0 +1,27 @@
+#------------------------------------
+# Installation via zypper
+#------------------------------------
+- name: Install zypper applications
+  community.general.zypper:
+    name: "{{ application_packages[item].packages }}"
+    state: present
+  loop: >-
+    {{
+      application_packages
+      | dict2items
+      | selectattr('value.installer', 'equalto', 'zypper')
+      | map(attribute='key')
+      | select('in', applications.keys())
+      | list
+    }}
+  when:
+    - applications[item] | default(false)
+  tags:
+    - applications
+    - applications_zypper
+
+
+### vim, neovim mit python, ansible, docker, kubernetes, yaml, rust, git 
+### und anderen Pluginsnicht vergessen.
+###
+### Visual Studio Code nicht vergessen.

@@ -1,3 +1,18 @@
+---
+- name: Configure applications
+  hosts: opensuse
+  become: true
+
+  vars_files:
+    - ../vars/applications.yaml
+
+  tasks:
+    - import_tasks: applications_zypper.yaml
+    - import_tasks: applications_repository.yaml
+    - import_tasks: applications_flatpak.yaml
+    - import_tasks: applications_rpm.yaml
+    - import_tasks: applications_config.yaml
+
 ### vim, neovim mit python, ansible, docker, kubernetes, yaml, rust, git 
 ### und anderen Pluginsnicht vergessen.
 ###

@@ -1,0 +1,431 @@
+application_packages:
+
+  firefox:
+    installer: zypper
+    packages:
+      - MozillaFirefox
+      - MozillaFirefox-branding-openSUSE
+      - MozillaFirefox-translations-common
+
+  chromium:
+    installer: zypper
+    packages:
+      - chromium
+      - chromium-plugin-widevinecdm
+      #- chromium-ffmpeg-extra
+  
+  brave:
+    installer: flatpak
+    packages:
+      - com.brave.Browser
+  
+
+  google_chrome:
+    installer: repository
+    repository:
+      alias: google-chrome
+      url: https://dl.google.com/linux/chrome/rpm/stable/x86_64
+      autorefresh: true
+      auto_import_keys: true
+    packages:
+      - google-chrome-stable
+  
+  thunderbird:
+    installer: zypper
+    packages:
+      - MozillaThunderbird
+      - MozillaThunderbird-translations-common
+
+  betterbird:
+    installer: flatpak
+    packages:
+      - eu.betterbird.Betterbird
+  
+  geary:
+    installer: zypper
+    packages:
+      - geary
+      - geary-lang
+  
+  signal_desktop:
+    installer: flatpak
+    packages:
+      - org.signal.Signal
+  
+  telegram:
+    installer: zypper
+    packages:
+      - telegram-desktop
+  
+  viber:
+    installer: flatpak
+    packages:
+      - com.viber.Viber
+  
+  discord:
+    installer: zypper
+    packages:
+      - discord
+  
+  zoom:
+    installer: flatpak
+    packages:
+      - us.zoom.Zoom
+  
+  showtime:
+    installer: zypper
+    packages:
+      - showtime
+      - showtime-lang
+
+  vlc:
+    installer: zypper
+    packages:
+      - vlc
+      - vlc-codecs
+      - vlc-lang
+  
+  celluloid:
+    installer: zypper
+    packages:
+      - celluloid
+      - celluloid-lang
+  
+  parole:
+    installer: zypper
+    packages:
+      - parole
+      - parole-lang
+  
+  rhythmbox:
+    installer: zypper
+    packages:
+      - rhythmbox
+      - rhythmbox-lang
+
+  musicpod:
+    installer: flatpak
+    packages:
+      - org.feichtmeier.Musicpod
+  
+  soundconverter:
+    installer: zypper
+    packages:
+      - soundconverter
+      - soundconverter-lang
+
+  eyedropper:
+    installer: zypper
+    packages:
+      - eyedropper
+      - eyedropper-lang
+    
+  gcolor3:
+    installer: zypper
+    packages:
+      - gcolor3
+  
+  gimp:
+    installer: zypper
+    packages:
+      - gimp
+      - gimp-lang
+      - gimp-plugin-aa
+      - gimp-plugin-python3
+  
+  krita:
+    installer: zypper
+    packages:
+      - krita
+      - krita-lang
+  
+  kooha:
+    installer: flatpak
+    packages:
+      - io.github.seadve.Kooha
+  
+  handbrake:
+    installer: zypper
+    packages:
+      - handbrake-cli
+      - handbrake-gtk
+      - handbrake-gtk-lang
+
+  kdenlive:
+    installer: zypper
+    packages:
+      - kdenlive
+      - kdenlive-lang
+  
+  openshot:
+    installer: flatpak
+    packages:
+      - org.openshot.OpenShot
+  
+  wine:
+    installer: repository
+    repository:
+      alias: wine
+      url: https://download.opensuse.org/repositories/Emulators/16.0/
+      priority: 95
+      autorefresh: true
+      auto_import_keys: true
+    packages:
+      - alsa-devel-32bit
+      - cups-devel-32bit
+      - FAudio-devel 
+      - FAudio-devel-32bit
+      - fontconfig-devel-32bit
+      - freetype 
+      - freetype-devel 
+      - freetype2-devel-32bit
+      - glibc-devel 
+      - glibc-devel-32bit
+      - glib2-devel-32bit
+      - gtk3-data
+      - gtk3-devel-32bit 
+      - gtk3-lang 
+      - gtk3-tools 
+      - gtk3-tools-32bit 
+      - libattr-devel-32bit
+      - libcom_err-devel 
+      - libcom_err-devel-32bit 
+      - libedit0-32bit
+      - liberation-fonts
+      - libexif-devel-32bit 
+      - libexif12-32bit
+      - libFLAC8-32bit
+      - libfreetype6
+      - libfreetype6-32bit
+      - libgbm1-32bit
+      - libgnutls-devel-32bit
+      - libgphoto2-devel-32bit
+      - libgsm-devel-32bit
+      - libICE6-32bit
+      - libjpeg8-devel-32bit
+      - libjson-c3-32bit
+      - liblcms2-devel-32bit
+      - libLLVM13-32bit
+      - libogg0-32bit 
+      - libOSMesa-devel-32bit
+      - libpcap-devel-32bit
+      - libpng16-16 
+      - libpng16-16-32bit 
+      - libpng16-devel-32bit
+      - libSM6-32bit
+      - libsndfile1-32bit
+      - libtiff-devel-32bit
+      - libuuid1-32bit
+      - libv4l-devel-32bit
+      - libva-devel-32bit
+      - libva2 
+      - libva2-32bit 
+      - libvorbis0-32bit
+      - libwayland-client0-32bit
+      - libwayland-server0-32bit
+      - libX11-devel 
+      - libX11-devel-32bit
+      - libXcomposite-devel-32bit 
+      - libXcursor-devel 
+      - libXcursor-devel-32bit
+      - libXext-devel-32bit
+      - libXi-devel-32bit
+      - libXinerama-devel-32bit
+      - libxml2-devel-32bit
+      - libXrandr-devel-32bit
+      - libXrender-devel-32bit
+      - libxslt1
+      - libxslt1-32bit
+      - libxslt-devel-32bit
+      - libXtst6-32bit
+      - libXxf86vm-devel-32bit
+      - libz1 
+      - libz1-32bit
+      - Mesa-dri-32bit 
+      - Mesa-libEGL1-32bit 
+      - Mesa-libGL-devel-32bit
+      - Mesa-libGL1-32bit
+      - mpg123-devel 
+      - mpg123-devel-32bit
+      - ncurses-devel-32bit
+      - nss-mdns-32bit
+      - ocl-icd-devel 
+      - ocl-icd-devel-32bit
+      - openal-soft-devel-32bit
+      - openldap2-devel-32bit
+      - PlayOnLinux
+      - samba-client  
+      - samba-libs
+      - samba-winbind
+      - sane-backends-32bit
+      - unixODBC-32bit
+      - wine
+      - zlib-devel-32bit
+
+  steam:
+    installer: flatpak
+    packages:
+      - com.valvesoftware.Steam
+  
+  lutris:
+    installer: zypper
+    packages:
+      - giflib-devel 
+      - giflib-devel-32bit
+      - giflib-progs
+      - gstreamer-plugins-base 
+      - gtk3-data
+      - gtk3-devel 
+      - gtk3-lang 
+      - gtk3-tools 
+      - libmpg123-0
+      - libopenal1
+      - libpulse0
+      - libv4l1-0-32bit 
+      - libv4l2-0 
+      - libv4l2-0-32bit
+      - libva2 
+      - libvulkan1 
+      - libxslt1 
+      - libxslt1-32bit
+      - lutris
+      - mpg123
+      - ocl-icd-devel 
+      - v4l-utils
+
+  rustdesk:
+    installer: flatpak
+    packages:
+      - com.rustdesk.RustDesk
+
+  anydesk:
+    installer: flatpak
+    packages:
+      - com.anydesk.Anydesk
+
+  teamviewer:
+    installer: rpm
+    packages:
+      url: https://download.teamviewer.com/download/linux/teamviewer-suse.x86_64.rpm
+      filename: teamviewer-suse.x86_64.rpm
+  
+  ranger:
+    installer: zypper
+    packages:
+      - highlight 
+      - mediainfo 
+      - poppler-data 
+      - poppler-tools 
+      - ranger 
+      - w3m 
+      - xfce4-terminal 
+      - xfce4-terminal-lang
+  
+  yazi:
+    installer: zypper
+    packages:
+      - yazi
+      - yazi-bash-completion
+      - yazi-fish-completion
+      - yazi-zsh-completion
+  
+  zsh:
+    installer: zypper
+    packages:
+      - zsh
+  
+  kitty:
+    installer: zypper
+    packages:
+      - kitty
+      - kitty-shell-integration
+      - kitty-terminfo
+  
+  urxvt:
+    installer: zypper
+    packages:
+      - rxvt-unicode
+      - urxvt-font-size
+      - urxvt-perls
+      - xclip
+  
+  tilix:
+    installer: zypper
+    packages:
+      - tilix
+      - tilix-lang
+  
+  conky:
+    installer: zypper
+    packages:
+      - conky
+      - adobe-sourcecodepro-fonts 
+      - adobe-sourcesanspro-fonts 
+      - hack-fonts 
+      - monitoring-plugins-sensors
+      - terminus-bitmap-fonts 
+
+  zim:
+    installer: zypper
+    packages:
+      - zim
+      - zim-lang
+  
+  keepassxc:
+    installer: zypper
+    packages:
+      - keepassxc
+      - keepassxc-lang
+
+  pycharm:
+    installer: flatpak
+    packages:
+      - com.jetbrains.PyCharm-Professional
+  
+  sublime:
+    installer: flatpak
+    packages:
+      - com.sublimehq.SublimeText
+  
+  weechat:
+    installer: zypper
+    packages:
+      - weechat
+      - weechat-lang
+  
+  kvm:
+    installer: zypper
+    patterns:
+      - kvm_server
+      - kvm_tools
+    packages:
+      - virt-manager
+
+  virtualbox:
+    installer: zypper
+    packages:
+      - binutils
+      - gcc
+      - glibc-devel
+      - glibc-utils
+      - kernel-devel
+      - libgomp1
+      - make
+      - make-lang
+      - virtualbox
+      - virtualbox-guest-desktop-icons
+      - virtualbox-guest-source
+      - virtualbox-guest-tools
+      - virtualbox-qt
+  
+  texlive_latex:
+    installer: zypper
+    packages:
+      - info
+      - openjade
+      - psutils
+      - t1utils
+      - texinfo
+      - texlive-scheme-full
+      #- texmaker  (Nur als Flatpak)
+      - texstudio
