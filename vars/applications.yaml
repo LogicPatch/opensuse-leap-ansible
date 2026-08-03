@@ -395,11 +395,16 @@ application_packages:
   
   kvm:
     installer: zypper
-    patterns:
-      - kvm_server
-      - kvm_tools
     packages:
+      - bridge-utils
+      - libvirt
+      - libvirt-client
+      - libvirt-daemon
+      - qemu-kvm
+      - qemu-tools
       - virt-manager
+      - virt-install
+      - virt-viewer
 
   virtualbox:
     installer: zypper

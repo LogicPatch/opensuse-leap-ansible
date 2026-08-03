@@ -1,0 +1,108 @@
+# ------------------------------------
+# Install Oh My Zsh
+# ------------------------------------
+- name: Check Oh My Zsh installation
+  ansible.builtin.stat:
+    path: "/home/{{ item }}/.oh-my-zsh"
+  loop: "{{ target_users }}"
+  register: ohmyzsh
+  when: applications.zsh
+  tags:
+    - applications
+    - applications_config
+- name: Install Oh My Zsh
+  ansible.builtin.shell: |
+    RUNZSH=no CHSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  args:
+    chdir: "/home/{{ item.item }}"
+  loop: "{{ ohmyzsh.results }}"
+  when:
+    - applications.zsh
+    - not item.stat.exists
+  become_user: "{{ item.item }}"
+  tags:
+    - applications
+    - applications_config
+# ------------------------------------
+# Set zsh as login shell
+# ------------------------------------
+- name: Set zsh as login shell
+  ansible.builtin.user:
+    name: "{{ item }}"
+    shell: /usr/bin/zsh
+  loop: "{{ target_users }}"
+  when: applications.zsh
+  tags:
+    - applications
+    - applications_config
+
+
+
+
+# ------------------------------------
+# KVM user configuration
+# ------------------------------------
+- name: Add users to virtualization groups
+  ansible.builtin.user:
+    name: "{{ item }}"
+    groups: 
+      - kvm
+      - libvirt
+    append: true
+  loop: "{{ target_users }}"
+  when: applications.kvm
+  tags:
+    - applications
+    - applications_config
+# ------------------------------------
+# Configure libvirt default network
+# ------------------------------------
+- name: Check libvirt default network
+  ansible.builtin.command:
+    cmd: virsh --connect qemu:///system net-list --all --name
+  register: libvirt_networks
+  changed_when: false
+  when: applications.kvm
+  tags:
+    - applications
+    - applications_config
+- name: Define libvirt default network
+  ansible.builtin.command:
+    cmd: virsh --connect qemu:///system net-define /usr/share/libvirt/networks/default.xml
+  when:
+    - applications.kvm
+    - "'default' not in libvirt_networks.stdout_lines"
+  tags:
+    - applications
+    - applications_config
+- name: Enable libvirt default network autostart
+  ansible.builtin.command:
+    cmd: virsh --connect qemu:///system net-autostart default
+  when: 
+    - applications.kvm
+  tags:
+    - applications
+    - applications_config
+
+
+
+# ------------------------------------
+# VirtualBox user configuration
+# ------------------------------------
+- name: Add users to vboxusers group
+  ansible.builtin.user:
+    name: "{{ item }}"
+    groups:
+      - vboxusers
+    append: true
+  loop: "{{ target_users }}"
+  when: applications.virtualbox
+  tags:
+    - applications
+    - applications_config
+
+
+### vim, neovim mit python, ansible, docker, kubernetes, yaml, rust, git 
+### und anderen Pluginsnicht vergessen.
+###
+### Visual Studio Code nicht vergessen.

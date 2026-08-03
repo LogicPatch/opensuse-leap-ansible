@@ -1,3 +1,9 @@
+# -----------------------------------
+# Target user configuration
+# -----------------------------------
+target_users:
+  - mastermind
+
 repositories:
   packman: true
   codecs: true
