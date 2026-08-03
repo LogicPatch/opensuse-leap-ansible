@@ -174,19 +174,16 @@ application_packages:
       - alsa-devel-32bit
       - cups-devel-32bit
       - FAudio-devel 
-      - FAudio-devel-32bit
-      - fontconfig-devel-32bit
-      - freetype 
-      - freetype-devel 
+      - fontconfig-devel-32bit 
+      - freetype2-devel 
       - freetype2-devel-32bit
       - glibc-devel 
       - glibc-devel-32bit
       - glib2-devel-32bit
       - gtk3-data
-      - gtk3-devel-32bit 
+      - gtk3-devel
       - gtk3-lang 
       - gtk3-tools 
-      - gtk3-tools-32bit 
       - libattr-devel-32bit
       - libcom_err-devel 
       - libcom_err-devel-32bit 
@@ -194,20 +191,23 @@ application_packages:
       - liberation-fonts
       - libexif-devel-32bit 
       - libexif12-32bit
-      - libFLAC8-32bit
+      - libFLAC12
+      - libFLAC12-32bit
       - libfreetype6
       - libfreetype6-32bit
-      - libgbm1-32bit
+      - libgbm1
       - libgnutls-devel-32bit
-      - libgphoto2-devel-32bit
+      - libgphoto2-devel
       - libgsm-devel-32bit
       - libICE6-32bit
-      - libjpeg8-devel-32bit
-      - libjson-c3-32bit
+      - libjpeg8-devel
+      - libjson-c5
+      - libjson-c5-32bit
       - liblcms2-devel-32bit
-      - libLLVM13-32bit
+      - libLLVM19
+      - libLLVM19-32bit
       - libogg0-32bit 
-      - libOSMesa-devel-32bit
+      - libOSMesa-devel
       - libpcap-devel-32bit
       - libpng16-16 
       - libpng16-16-32bit 
@@ -217,12 +217,11 @@ application_packages:
       - libtiff-devel-32bit
       - libuuid1-32bit
       - libv4l-devel-32bit
-      - libva-devel-32bit
+      - libva-devel
       - libva2 
-      - libva2-32bit 
       - libvorbis0-32bit
-      - libwayland-client0-32bit
-      - libwayland-server0-32bit
+      - libwayland-client0
+      - libwayland-server0
       - libX11-devel 
       - libX11-devel-32bit
       - libXcomposite-devel-32bit 
@@ -238,26 +237,25 @@ application_packages:
       - libxslt1-32bit
       - libxslt-devel-32bit
       - libXtst6-32bit
-      - libXxf86vm-devel-32bit
+      - libXxf86vm-devel
       - libz1 
       - libz1-32bit
-      - Mesa-dri-32bit 
-      - Mesa-libEGL1-32bit 
-      - Mesa-libGL-devel-32bit
-      - Mesa-libGL1-32bit
+      - Mesa-dri
+      - Mesa-libEGL1
+      - Mesa-libGL-devel
+      - Mesa-libGL1
       - mpg123-devel 
-      - mpg123-devel-32bit
       - ncurses-devel-32bit
       - nss-mdns-32bit
       - ocl-icd-devel 
-      - ocl-icd-devel-32bit
-      - openal-soft-devel-32bit
-      - openldap2-devel-32bit
+      - openal-soft-devel
+      - openldap2_6
+      - openldap2_6-devel
       - PlayOnLinux
       - samba-client  
       - samba-libs
       - samba-winbind
-      - sane-backends-32bit
+      - sane-backends
       - unixODBC-32bit
       - wine
       - zlib-devel-32bit

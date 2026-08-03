@@ -1,0 +1,88 @@
+#------------------------------------
+# Add third-party repositories
+#------------------------------------
+- name: Add third-party repositories
+  community.general.zypper_repository:
+    name: "{{ application_packages[item].repository.alias }}"
+    repo: "{{ application_packages[item].repository.url }}"
+    priority: "{{ application_packages[item].repository.priority | default(99) }}"
+    autorefresh: "{{ application_packages[item].repository.autorefresh | default(true) }}"
+    auto_import_keys: false
+    state: present
+  loop: >-
+    {{
+      application_packages
+      | dict2items
+      | selectattr('value.installer', 'equalto', 'repository')
+      | map(attribute='key')
+      | select('in', applications.keys())
+      | list
+    }}
+  when:
+    - applications[item] | default(false)
+  tags:
+    - applications
+    - applications_repository
+
+#------------------------------------
+# Import Google Chrome signing key
+#------------------------------------
+- name: Import Google Chrome GPG key
+  ansible.builtin.rpm_key:
+    state: present
+    key: https://dl.google.com/linux/linux_signing_key.pub
+  when:
+    - applications.google_chrome | default(false)
+  tags:
+    - applications
+    - applications_repository
+
+#------------------------------------
+# Refresh repositories
+#------------------------------------
+- name: Refresh third-party repositories
+  ansible.builtin.command:
+    cmd: zypper --non-interactive refresh {{ application_packages[item].repository.alias }}
+  changed_when: false
+  loop: >-
+    {{
+      application_packages
+      | dict2items
+      | selectattr('value.installer', 'equalto', 'repository')
+      | map(attribute='key')
+      | select('in', applications.keys())
+      | list
+    }}
+  when:
+    - applications[item] | default(false)
+  tags:
+    - applications
+    - applications_repository
+
+#------------------------------------
+# Install repository applications
+#------------------------------------
+- name: Install repository applications
+  community.general.zypper:
+    name: "{{ application_packages[item].packages }}"
+    state: present
+  loop: >-
+    {{
+      application_packages
+      | dict2items
+      | selectattr('value.installer', 'equalto', 'repository')
+      | map(attribute='key')
+      | select('in', applications.keys())
+      | list
+    }}
+  when:
+    - applications[item] | default(false)
+  tags:
+    - applications
+    - applications_repository
+
+
+### vim, neovim mit python, ansible, docker, kubernetes, yaml, rust, git 
+### und anderen Pluginsnicht vergessen.
+###
+### Visual Studio Code nicht vergessen.
