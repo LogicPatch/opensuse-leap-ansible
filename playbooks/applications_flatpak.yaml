@@ -1,0 +1,27 @@
+#------------------------------------
+# Installation via Flatpak
+#------------------------------------
+- name: Install Flatpak applications
+  community.general.flatpak:
+    name: "{{ application_packages[item].packages }}"
+    state: present
+  loop: >-
+    {{
+      application_packages
+      | dict2items
+      | selectattr('value.installer', 'equalto', 'flatpak')
+      | map(attribute='key')
+      | select('in', applications.keys())
+      | list
+    }}
+  when:
+    - applications[item] | default(false)
+  tags:
+    - applications
+    - applications_flatpak
+
+
+### vim, neovim mit python, ansible, docker, kubernetes, yaml, rust, git 
+### und anderen Pluginsnicht vergessen.
+###
+### Visual Studio Code nicht vergessen.
