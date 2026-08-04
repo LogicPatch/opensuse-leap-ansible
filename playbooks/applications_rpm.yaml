@@ -1,0 +1,76 @@
+#------------------------------------
+# Download RPM packages
+#------------------------------------
+- name: Download RPM packages
+  ansible.builtin.get_url:
+    url: "{{ application_packages[item].packages.url }}"
+    dest: "/tmp/{{ application_packages[item].packages.filename }}"
+    mode: "0644"
+  loop: >-
+    {{
+      application_packages
+      | dict2items
+      | selectattr('value.installer', 'equalto', 'rpm')
+      | map(attribute='key')
+      | select('in', applications.keys())
+      | list
+    }}
+  when:
+    - applications[item] | default(false)
+  tags:
+    - applications
+    - applications_rpm
+
+#------------------------------------
+# Install RPM packages
+#------------------------------------
+- name: Install RPM packages
+  ansible.builtin.command:
+    cmd: >-
+      zypper
+      --non-interactive
+      {% if not application_packages[item].gpg_check | default(true) %}
+      --no-gpg-checks
+      {% endif %}
+      install
+      --auto-agree-with-licenses
+      --no-recommends
+      /tmp/{{ application_packages[item].packages.filename }}
+  register: rpm_install
+  changed_when: "'Nothing to do' not in rpm_install.stdout"
+  loop: >-
+    {{
+      application_packages
+      | dict2items
+      | selectattr('value.installer', 'equalto', 'rpm')
+      | map(attribute='key')
+      | select('in', applications.keys())
+      | list
+    }}
+  when:
+    - applications[item] | default(false)
+  tags:
+    - applications
+    - applications_rpm
+
+#------------------------------------
+# Remove downloaded RPM packages
+#------------------------------------
+- name: Remove downloaded RPM packages
+  ansible.builtin.file:
+    path: "/tmp/{{ application_packages[item].packages.filename }}"
+    state: absent
+  loop: >-
+    {{
+      application_packages
+      | dict2items
+      | selectattr('value.installer', 'equalto', 'rpm')
+      | map(attribute='key')
+      | select('in', applications.keys())
+      | list
+    }}
+  when:
+    - applications[item] | default(false)
+  tags:
+    - applications
+    - applications_rpm

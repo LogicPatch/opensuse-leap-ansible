@@ -303,6 +303,7 @@ application_packages:
 
   teamviewer:
     installer: rpm
+    gpg_check: false
     packages:
       url: https://download.teamviewer.com/download/linux/teamviewer-suse.x86_64.rpm
       filename: teamviewer-suse.x86_64.rpm
