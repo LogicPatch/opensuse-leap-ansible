@@ -1,17 +1,4 @@
-- name: Advanced Workstation Setup
-  hosts: localhost
-  become: true
-
-  pre_tasks:
-    - name: Include profile
-      include_vars: "{{ profile | default('profiles/full.yml') }}"
-
-  roles:
-    - { role: base }
-    - { role: browser, when: install.browser }
-    - { role: messenger, when: install.messenger }
-    - { role: multimedia, when: install.multimedia }
-    - { role: dev, when: install.dev }
-    - { role: gaming, when: install.gaming }
-    - { role: virtualization, when: install.virtualization }
-    - { role: tools }
+- import_playbook: playbooks/repositories.yaml
+- import_playbook: playbooks/base-system.yaml
+- import_playbook: playbooks/xfce.yaml
+- import_playbook: playbooks/applications.yaml

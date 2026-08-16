@@ -4,11 +4,6 @@
 base_system_packages:
   - acpid
   - efibootmgr
-  - faad2
-  - ffmpeg
-  - ffmpegthumbnailer
-  - frei0r-plugins
-  - frei0r-plugins-opencv
   - gimp
   - gimp-lang
   - git
@@ -17,6 +12,20 @@ base_system_packages:
   - htop
   - ImageMagick-extra
   - kernel-devel
+  - ncdu
+  - perl
+  - zvbi
+
+packman_multimedia_packages:
+  - faad2
+  - ffmpeg
+  - frei0r-plugins
+  - frei0r-plugins-opencv
+  - gstreamer-plugins-libav
+  - gstreamer-plugins-base
+  - gstreamer-plugins-good
+  - gstreamer-plugins-bad
+  - gstreamer-plugins-ugly
   - lame
   - twolame
   - libaacs0
@@ -24,17 +33,9 @@ base_system_packages:
   - libdvdread8
   - libdvdcss2
   - libopus0
-  - ncdu
   - opencv
   - opus-tools
-  - perl
   - speex
-  - zvbi
-  - gstreamer-plugins-libav
-  - gstreamer-plugins-base
-  - gstreamer-plugins-good
-  - gstreamer-plugins-bad
-  - gstreamer-plugins-ugly
 
 base_flatpak_packages:
   - flatpak
@@ -53,7 +54,6 @@ wireless_packages:
 laptop_optimization_packages:
   - powertop
   - powertop-lang
-  - tlp
   - zram-generator
 
 nvidia_driver_packages:

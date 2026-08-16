@@ -2,6 +2,9 @@
   hosts: opensuse
   become: true
 
+  vars_files:
+    - ../vars/base-system.yaml
+
   tasks:
     # -----------------------------------
     # Packman Repository
@@ -68,12 +71,14 @@
     # -----------------------------------
     # Vendor-Switch to Packman
     # -----------------------------------
-    - name: Switch multimedia packages to Packman
+    - name: Install multimedia packages from Packman
       ansible.builtin.command:
-        cmd: zypper --non-interactive dup --from packman --allow-vendor-change
+        cmd: >
+          zypper --non-interactive install
+          --from packman
+          --allow-vendor-change
+          {{ packman_multimedia_packages | join(' ') }}
       when: repositories.packman
-      register: packman_dup
-      changed_when: "'Nothing to do.' not in packman_dup.stdout"
       tags:
         - repositories
         - packman
@@ -85,7 +90,6 @@
         name: '*'
         state: dist-upgrade
         update_cache: true
-        allow_vendor_change: true
       tags:
         - repositories
         - packman

@@ -55,6 +55,27 @@
     - applications
     - applications_config
 # ------------------------------------
+# Enable libvirt sockets
+# ------------------------------------
+- name: Ensure libvirt QEMU daemon socket is active
+  ansible.builtin.systemd:
+    name: virtqemud.socket
+    enabled: true
+    state: started
+  when: applications.kvm
+  tags:
+    - applications
+    - applications_config
+- name: Ensure libvirt network daemon socket is active
+  ansible.builtin.systemd:
+    name: virtnetworkd.socket
+    enabled: true
+    state: started
+  when: applications.kvm
+  tags:
+    - applications
+    - applications_config
+# ------------------------------------
 # Configure libvirt default network
 # ------------------------------------
 - name: Check libvirt default network
@@ -75,11 +96,25 @@
   tags:
     - applications
     - applications_config
+# ------------------------------------
+# Configure libvirt default network autostart
+# ------------------------------------
+- name: Check libvirt default network autostart
+  ansible.builtin.command:
+    cmd: virsh --connect qemu:///system net-info default
+  register: libvirt_network_info
+  changed_when: false
+  when: applications.kvm
+  tags:
+    - applications
+    - applications_config
+
 - name: Enable libvirt default network autostart
   ansible.builtin.command:
     cmd: virsh --connect qemu:///system net-autostart default
   when: 
     - applications.kvm
+    - libvirt_network_info.stdout is not regex('Autostart:\s+yes')
   tags:
     - applications
     - applications_config

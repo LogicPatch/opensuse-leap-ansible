@@ -200,7 +200,7 @@ application_packages:
       - libgphoto2-devel
       - libgsm-devel-32bit
       - libICE6-32bit
-      - libjpeg8-devel
+      #- libjpeg8-devel
       - libjson-c5
       - libjson-c5-32bit
       - liblcms2-devel-32bit
@@ -288,7 +288,7 @@ application_packages:
       - libxslt1-32bit
       - lutris
       - mpg123
-      - ocl-icd-devel 
+      #- ocl-icd-devel
       - v4l-utils
 
   rustdesk:

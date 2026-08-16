@@ -5,12 +5,15 @@
   community.general.zypper:
     name: "{{ application_packages[item].packages }}"
     state: present
+    disable_recommends: true
   loop: >-
     {{
       application_packages
       | dict2items
       | selectattr('value.installer', 'equalto', 'zypper')
       | map(attribute='key')
+      | reject('equalto', 'lutris')
+      | reject('equalto', 'vlc')
       | select('in', applications.keys())
       | list
     }}
@@ -20,6 +23,58 @@
     - applications
     - applications_zypper
 
+#------------------------------------
+# Lutris
+#------------------------------------
+- name: Install Lutris
+  community.general.zypper:
+    name: "{{ application_packages.lutris.packages }}"
+    state: present
+    disable_recommends: true
+    skip_post_errors: true
+  when:
+    - applications.lutris | default(false) | bool
+  tags:
+    - applications
+    - applications_zypper
+    - lutris
+
+#------------------------------------
+# VLC
+#------------------------------------
+- name: Switch FFmpeg libraries to Packman for VLC
+  ansible.builtin.command:
+    cmd: >
+      zypper --non-interactive install
+      --from packman
+      --allow-vendor-change
+      libavcodec61
+      libavdevice61
+      libavfilter10
+      libavformat61
+      libavutil59
+      libswresample5
+      libswscale8
+      libpostproc58
+  when:
+    - applications.vlc | default(false) | bool
+  tags:
+    - applications
+    - applications_zypper
+    - vlc
+
+- name: Install VLC with Packman codec dependencies
+  community.general.zypper:
+    name: "{{ application_packages.vlc.packages }}"
+    state: present
+    allow_vendor_change: true
+    disable_recommends: false
+  when:
+    - applications.vlc | default(false) | bool
+  tags:
+    - applications
+    - applications_zypper
+    - vlc
 
 ### vim, neovim mit python, ansible, docker, kubernetes, yaml, rust, git 
 ### und anderen Pluginsnicht vergessen.

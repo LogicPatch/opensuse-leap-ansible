@@ -1,4 +1,29 @@
 #------------------------------------
+# Download TeamViewer GPG key
+#------------------------------------
+- name: Download TeamViewer GPG key
+  ansible.builtin.get_url:
+    url: "https://linux.teamviewer.com/pubkey/currentkey.asc"
+    dest: "/tmp/teamviewer-key.asc"
+    mode: "0644"
+  when:
+    - applications.teamviewer | default(false)
+  tags:
+    - applications
+    - applications_rpm
+#------------------------------------
+# Import TeamViewer GPG key
+#------------------------------------
+- name: Import TeamViewer GPG key
+  ansible.builtin.rpm_key:
+    state: present
+    key: "/tmp/teamviewer-key.asc"
+  when:
+    - applications.teamviewer | default(false)
+  tags:
+    - applications
+    - applications_rpm
+#------------------------------------
 # Download RPM packages
 #------------------------------------
 - name: Download RPM packages
@@ -71,6 +96,18 @@
     }}
   when:
     - applications[item] | default(false)
+  tags:
+    - applications
+    - applications_rpm
+#------------------------------------
+# Remove TeamViewer GPG key
+#------------------------------------
+- name: Remove TeamViewer GPG key
+  ansible.builtin.file:
+    path: "/tmp/teamviewer-key.asc"
+    state: absent
+  when:
+    - applications.teamviewer | default(false)
   tags:
     - applications
     - applications_rpm

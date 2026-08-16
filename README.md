@@ -1,344 +1,496 @@
 ![](logo.png)
 
-# 🦎 OpenSuSE Leap Ansible
+# 🦎 openSUSE Leap Ansible
 
-Automated openSUSE Leap setup and customization using Ansible playbooks.
+Automated provisioning and configuration of **openSUSE Leap** workstations using **Ansible**.
+
+This project provides a modular collection of Ansible playbooks that transforms a fresh openSUSE Leap installation into a fully configured desktop and development workstation.
+
+The playbooks are designed to be **reproducible**, **idempotent**, and **easy to customize**, allowing the same configuration to be applied repeatedly without unwanted side effects.
 
 ---
 
 # 🐧 Overview
 
-This project provides a collection of Ansible playbooks to automate the installation and configuration of openSUSE Leap systems.
+Setting up a new Linux installation often requires installing hundreds of packages, enabling repositories, configuring desktop settings, installing development tools, and customizing the system.
 
-It helps quickly configure a fresh openSUSE installation with:
+This project automates these repetitive tasks.
 
-- additional repositories
-- system updates
-- hardware drivers
-- desktop customization
-- productivity tools
-- development tools
-- multimedia software
-- common desktop applications
+The goal is to create a reproducible openSUSE Leap environment that can be deployed within minutes instead of hours.
 
-The project is designed to create a reproducible and modular openSUSE desktop environment.
+The project currently supports:
 
----
-
-# 🎯 Who is this for?
-
-- openSUSE users reinstalling systems frequently
-- Linux enthusiasts building reproducible workstations
-- Developers setting up new machines
-- Users migrating to new hardware
-- Anyone wanting automated desktop provisioning
+- Native openSUSE packages (`zypper`)
+- Flatpak applications
+- Third-party repositories
+- Stand-alone RPM packages
+- GNOME desktop customization
+- Development environments
+- Virtualization software
+- Multimedia applications
+- Gaming software
+- Hardware configuration
+- Modular feature selection through Ansible variables
 
 ---
 
-# 💡 Key Features
+# 🎯 Who is this project for?
 
-- ✅ Ansible-based automation
-- ✅ Reproducible installations
+This project is intended for:
+
+- openSUSE Leap users
+- Linux enthusiasts
+- Developers
+- DevOps engineers
+- Homelab users
+- Anyone who frequently reinstalls Linux
+- Anyone wanting reproducible workstation provisioning
+
+---
+
+# ✨ Features
+
+- ✅ Fully Ansible-based automation
 - ✅ Modular playbook structure
-- ✅ openSUSE Leap focused
+- ✅ Idempotent execution
+- ✅ Reproducible installations
 - ✅ SSH-based deployment
-- ✅ Host-only lab environment tested
-- ✅ GNOME customization
-- ✅ Driver installation
-- ✅ Desktop application provisioning
-- ✅ Easy to extend and maintain
+- ✅ openSUSE Leap focused
+- ✅ Flatpak integration
+- ✅ Third-party repository management
+- ✅ Stand-alone RPM installation support
+- ✅ GNOME desktop customization
+- ✅ Development workstation provisioning
+- ✅ Multimedia workstation provisioning
+- ✅ Gaming software installation
+- ✅ Easy to extend
 
 ---
 
-# 🏗️ Test Environment
+# 🏗 Project Architecture
+
+The project is organized into independent modules.
+
+```text
+site.yaml
+│
+├── repositories.yaml
+├── base-system.yaml
+├── gnome.yaml
+└── applications.yaml
+      ├── applications_zypper.yaml
+      ├── applications_flatpak.yaml
+      ├── applications_repository.yaml
+      └── applications_rpm.yaml
+```
+
+Each module is responsible for one clearly defined task.
+
+This keeps the project maintainable and allows individual components to be executed independently.
+
+---
+
+# 📦 Supported Installation Methods
+
+Applications can be installed using four different mechanisms.
+
+| Method | Description |
+|---------|-------------|
+| **zypper** | Native openSUSE packages |
+| **Flatpak** | Applications from Flathub |
+| **Repository** | Packages requiring an additional third-party repository |
+| **RPM** | Stand-alone RPM packages downloaded directly from vendors |
+
+This abstraction allows every application to use the most appropriate installation method while keeping the playbooks generic.
+
+---
+
+# ⚙ Configuration
+
+The project is controlled almost entirely through Ansible variables.
+
+The primary configuration is stored in:
+
+```text
+group_vars/
+└── opensuse.yaml
+```
+
+Applications can be enabled or disabled individually.
+
+Example:
+
+```yaml
+applications:
+  firefox: true
+  brave: true
+  signal_desktop: true
+  steam: false
+  wine: true
+```
+
+Only enabled applications are processed during playbook execution.
+
+---
+
+# 🧪 Test Environment
 
 ## Host System
 
 - NixOS
-- Ansible Core 2.x
-- KVM / Libvirt
+- Ansible Core
+- KVM / libvirt
+- Ansible Controller
 
 ## Target System
 
 - openSUSE Leap 16
+- GNOME Desktop
+- OpenSSH Server
+
+The project is primarily developed and tested inside virtual machines
+before being deployed on physical hardware.
+
+The KVM/libvirt environment is used exclusively as a test environment
+and is not required for using the playbooks on a physical system.
 
 ---
-
-# 🌐 Host-Only Network Setup (KVM / libvirt)
-
-This project uses a **host-only network** to provide stable SSH access between the NixOS host and the openSUSE guest VM.
-
-It is isolated from the external network but still reachable from the host system.
-
-
-
-## Network Design
-
-| Component     | IP Address      | Role                |
-|--------------|----------------|---------------------|
-| NixOS Host   | 192.168.56.1   | Ansible Controller  |
-| openSUSE VM  | 192.168.56.10  | Managed Node        |
-
----
-
-## libvirt Network Definition
-
-The host-only network is defined in:
-`hostonly.xml`  
-SSH connectivity is used for all Ansible deployments.
-
-
-### Create and Enable Network
-
-Define the network:
-```bash
-sudo virsh net-define hostonly.xml
-```
-
-Start the network:
-```bash
-sudo virsh net-start hostonly
-```
-
-Enable autostart:
-```bash
-sudo virsh net-autostart hostonly
-```
-
-Verify status:
-```bash
-sudo virsh net-list --all
-```
-
-### Verify Host Interface
-
-After starting the network, verify that the bridge interface has been created correctly:
-
-```bash
-ip addr show virbr1
-```
-
-Expected result:
-
-- The interface `virbr1` exists  
-- It is assigned the IP address `192.168.56.1`  
-- The state should be `UP` (or at least not missing)
-
----
-
-## VM Network Configuration
-
-In the virtual machine configuration (virt-manager), the network adapter must be set to the host-only libvirt network to ensure SSH connectivity between host and guest.
-
-
-### Network Source
-
-Select:
-In the virt-manager main window:  
-**Double-click the relevant VM  →  Show virtual hardware details  →  Add hardware  →  Select "Network" in the left column**  
-- **Network source:** `Virtual Network 'hostonly' (isolated network)`  
-
-This ensures the VM is attached to the libvirt-managed host-only bridge.  
-
-Recommended settings:  
-- **Device model:** `virtio` (for best performance)  
-- **MAC address:** can be left automatic or set manually for reproducibility  
-- Leaving the MAC address on **auto-generated** is fine for testing  
-- For reproducible lab setups (e.g. Ansible inventory consistency), a **fixed MAC address is recommended**  
-- Changing the MAC will usually result in a new DHCP lease from libvirt
-
-### After booting the VM (openSUSE)
-Network settings via NetworkManager  
-`nmtui`  
-Then	→	`Edit a connection`  
-Select the host-only network interface (e.g., `Wired connection 2`  `<Edit>`)  
-
-Profile name		→	`Hostonly`  
-IPv4-Configuration	→	`<manually>	<Show>`  
-Adresses			→	`192.168.56.10/24`  
-Gateway				→	leave blank ( important! )  
-DNS					→	Optional
-					→	`<OK>`  
-
-### Start SSH daemon
-```
-sudo systemctl start sshd
-sudo systemctl enable sshd
-```  
-
-
-
-### Expected Result
-
-After booting the VM:
-
-- The VM receives an IP address in the host-only range (e.g. `192.168.56.10`)
-- The host can ping the VM
-- SSH access is available from host to guest
-
-Example:
-
-```bash
-ping 192.168.56.10
-ssh mastermind@192.168.56.10
-```
 
 # 🔐 SSH Configuration
 
-The target system is managed using SSH key authentication.
+The target machine is managed using SSH public key authentication.
 
-Generate and copy key:
+Generate a key pair:
 
 ```bash
 ssh-keygen -t ed25519
+```
+
+Copy the key:
+
+```bash
 ssh-copy-id mastermind@192.168.56.10
+```
+
+Verify access:
+
+```bash
 ssh mastermind@192.168.56.10
 ```
 
+Once SSH authentication works, the system is ready for Ansible automation.
 
-# 🚀 Ansible Test
+---
 
-Verify Ansible connectivity:
+# 🚀 Running the Playbooks
+
+The recommended way to configure a fresh installation is to execute the complete site playbook.
 
 ```bash
-ansible all -m ping
-ansible opensuse -m ping
-ansible suse -m ping
+ansible-playbook site.yaml -K
 ```
 
-Expected output:
+The `-K` option (`--ask-become-pass`) prompts for the sudo password required for privileged system tasks. The password is requested once at the beginning of the playbook execution
+and is used for tasks requiring privilege escalation.
 
+For unattended execution, an alternative Ansible become configuration can be used instead.
+
+---
+
+
+# 📋 Playbook Execution Order
+
+When running the playbooks individually, the recommended execution order is:
+
+1. `repositories.yaml`
+2. `base-system.yaml`
+3. `gnome.yaml`
+4. `applications.yaml`
+
+Examples:
+
+```bash
+ansible-playbook playbooks/repositories.yaml -K
+```
+
+```bash
+ansible-playbook playbooks/base-system.yaml -K
+```
+
+```bash
+ansible-playbook playbooks/gnome.yaml -K
+```
+
+```bash
+ansible-playbook playbooks/applications.yaml -K
+```
+
+---
+
+# 🏷️ Available Tags
+
+Individual parts of the project can be executed independently using Ansible tags.
+
+## Configure repositories
+
+```bash
+ansible-playbook playbooks/repositories.yaml --tags repositories -K
+```
+
+## Configure the base system
+
+```bash
+ansible-playbook playbooks/base-system.yaml --tags base_system -K
+```
+
+## Configure the GNOME desktop
+
+```bash
+ansible-playbook playbooks/gnome.yaml --tags gnome -K
+```
+
+## Install all applications
+
+```bash
+ansible-playbook playbooks/applications.yaml --tags applications -K
+```
+
+## Install applications from openSUSE repositories
+
+```bash
+ansible-playbook playbooks/applications.yaml --tags applications_zypper -K
+```
+
+## Install Flatpak applications
+
+```bash
+ansible-playbook playbooks/applications.yaml --tags applications_flatpak -K
+```
+
+## Configure third-party repositories and install related applications
+
+```bash
+ansible-playbook playbooks/applications.yaml --tags applications_repository -K
+```
+
+## Install standalone RPM packages
+
+```bash
+ansible-playbook playbooks/applications.yaml --tags applications_rpm -K
+```
+
+
+Tags can be combined when required:
+```bash
+ansible-playbook playbooks/applications.yaml --tags applications_zypper,applications_flatpak -K
+```
+
+---
+
+# 📂 Repository Strategy
+This project supports several repository types.
+
+| Repository | Purpose | Recommended |
+|---|---|---|
+| OSS | Base system packages | ✔ Always enabled |
+| Packman | Multimedia codecs and packages | ✔ Recommended |
+| libdvdcss | DVD playback support | Optional |
+| NVIDIA | Proprietary NVIDIA drivers | Optional |
+
+## Default openSUSE repositories
+
+The standard Leap repositories provide the majority of desktop packages.
+
+Examples include:
+
+- Firefox
+- Thunderbird
+- GNOME
+- KDE
+- Development libraries
+
+## Packman Repository
+
+Packman provides multimedia packages that cannot be shipped with the default distribution.
+
+Typical packages include:
+
+- VLC codecs
+- FFmpeg
+- GStreamer plugins
+
+## NVIDIA Repository
+
+The NVIDIA repository provides proprietary NVIDIA graphics drivers.
+
+The repository is added automatically when NVIDIA support is enabled in
+the Ansible configuration.
+
+Enable it only on systems equipped with NVIDIA graphics hardware.
+
+## libdvdcss Repository
+
+Optional repository providing `libdvdcss` for DVD playback support.
+
+## Application-specific Repositories
+
+Some applications require their own upstream repositories.
+
+Currently supported:
+
+- Google Chrome
+- Wine
+
+The required repositories are automatically added and refreshed by the corresponding application playbooks.
+
+---
+
+# 🔄 Package Installation Strategy
+
+Applications are installed using the most appropriate method.
+
+| Application | Installation Method |
+|------------|---------------------|
+| Firefox | zypper |
+| Thunderbird | zypper |
+| Brave | Flatpak |
+| Betterbird | Flatpak |
+| Signal | Flatpak |
+| Steam | Flatpak |
+| Google Chrome | Third-party repository |
+| Wine | Third-party repository |
+| TeamViewer | Stand-alone RPM |
+
+This abstraction keeps the playbooks modular while allowing every application to use the preferred installation mechanism.
+
+---
+
+# ⚙️ Application Configuration
+
+Every application and its installation method is defined in:
+```text
+vars/applications.yaml
+```
+
+The applications to be installed are selected independently in:
+```text
+group_vars/opensuse.yaml
+```
+
+This separates application definitions from host-specific application selection.
+
+Example:
+```yaml
+applications:
+
+  firefox: true
+  chromium: false
+  brave: true
+  google_chrome: false
+
+  thunderbird: false
+  betterbird: true
+
+  steam: true
+  wine: true
+  teamviewer: false
+```
+
+This allows creating different workstation profiles without modifying the playbooks themselves.
+
+---
+
+# 🔄 Repository Updates
+
+Repositories are refreshed automatically during playbook execution.
+
+Where supported, repository GPG keys are imported automatically.
+
+Application-specific repositories are managed independently from the system repositories to keep repository configuration modular.
+
+---
+
+# 🔄 Updating an Existing System
+
+For normal system maintenance:
+
+```bash
+sudo zypper ref
+sudo zypper up
+```
+
+When additional repositories such as Packman are enabled, a distribution upgrade may be required to resolve vendor changes:
+
+```bash
+sudo zypper ref
+sudo zypper dup --allow-vendor-change
+```
+
+This behavior is part of openSUSE's package management and is expected.
+
+---
+
+# 🧪 Verifying Ansible Connectivity
+Before running the playbooks, verify that Ansible can connect to the managed host and execute modules successfully.
+
+Verify SSH connectivity:
+```bash
+ansible all -m ping
+```
+
+or, when targeting the opensuse inventory group:
+```bash
+ansible opensuse -m ping
+```
+
+A successful result looks similar to:
 ```text
 suse | SUCCESS => {
     "changed": false,
     "ping": "pong"
 }
 ```
-If this succeeds, the environment is fully ready for automation.
 
+The pong response confirms that:
 
-## 🚧 Notes
+- the inventory entry is correct
+- SSH connectivity is working
+- SSH authentication is working
+- Ansible can reach the target host
+- the required Python interpreter is available on the target
 
-- This setup is intended for a controlled lab environment
-- SSH key authentication is required for unattended execution
-- Inventory should be adapted for each target system
-- Playbooks are designed to be idempotent
-
-
----
-
-
-# 📋 Recommended Execution Flow
-
-The playbooks should be executed in the following order:
-
-1. repositories.yaml  
-2. base-system.yaml  
-3. gnome.yaml  
-4. applications.yaml  
-
-
-Run full setup:
-```bash
-ansible-playbook site.yaml
-```
-
-Or run individual components:
-```bash
-ansible-playbook playbooks/repositories.yaml -K
-ansible-playbook playbooks/base-system.yaml -K
-ansible-playbook playbooks/gnome.yaml -K
-ansible-playbook playbooks/applications.yaml -K
-```
+This only verifies Ansible connectivity. It does not verify that the playbooks or their configuration have been executed successfully.
 
 ---
 
-# 🧩 Repository Strategy (openSUSE)
+# 📝 Notes
 
-This project configures a modular repository setup for openSUSE Leap systems.
-
-The goal is to provide a clean separation between:
-
-- base system repositories (OSS)
-- multimedia extensions (Packman)
-- hardware drivers (NVIDIA)
-- optional codec support (libdvdcss)
-
-
-## 📚 Available Repositories
-
-| Repository | Purpose | Recommended |
-|------------|---------|-------------|
-| OSS (default) | Base system packages | ✔ always enabled |
-| Packman | Multimedia codecs, ffmpeg, GStreamer replacements | ✔ recommended |
-| libdvdcss | DVD playback support | optional |
-| NVIDIA | Proprietary GPU drivers | optional (NVIDIA GPUs only) |
-
-## ⚙️ Repository Configuration (Ansible Variables)
-
-Repositories can be enabled via `group_vars/opensuse.yaml`:
-
-```yaml
-repositories:
-  packman: true
-  libdvdcss: true
-  nvidia: false
-```
-
-
-## 🔄 Update Strategy (Important)
-
-openSUSE distinguishes between two update modes:
-
-### 🟢 Safe updates (default)
-
-```bash
-zypper ref
-zypper up
-```
-- updates packages within the same vendor
-- safest option for stable systems
-- recommended for daily usage
-
-### 🔴 Full system sync (advanced)
-
-```bash
-zypper ref
-zypper dup --allow-vendor-change
-```
-- performs a full distribution upgrade
-- resolves package conflicts across different repositories
-- required when using Packman or other third-party repositories
-- ensures consistent multimedia and driver stack alignment
-
-## ⚠️ Important Note
-
-After enabling additional repositories (e.g. Packman, NVIDIA, multimedia repositories),  
-`zypper up` may still show available updates.
-
-These updates are intentionally withheld to avoid vendor conflicts between different repositories.
-
-This is not an error, but a design decision of openSUSE's package management system.
-
-To fully apply these updates and align all packages across repositories, a distribution upgrade is required:
-
-`zypper dup --allow-vendor-change`
-
-
+- This project is primarily developed and tested against **openSUSE Leap 16**.
+- The playbooks are designed for systems managed through **systemd**, **zypper**, and **SSH**.
+- The inventory must be adapted to the target system.
+- Application selection is controlled through Ansible variables and does not require modifying the playbooks.
+- The playbooks are designed to be idempotent and can be executed repeatedly.
+- Some applications require third-party repositories or vendor-provided RPM packages.
+- The availability of individual packages may depend on the current openSUSE Leap repositories and third-party repositories.
+- The KVM/libvirt environment used during development is a test environment and is not required for using the playbooks on a physical system.
 
 ---
 
 # ⚠️ Disclaimer
 
-This project modifies system configuration, installed packages, and desktop settings.
+This project automates changes to system configuration, repositories, installed packages, desktop settings, and other components of an openSUSE system.
 
-Always review playbooks before execution.
+Although the playbooks are designed to be safe and idempotent, they should always be reviewed before being executed on a production or otherwise important system.
 
-Use at your own risk.
+Third-party repositories and vendor-provided packages are outside the control of this project. Their packages, signing keys, availability, and compatibility may change independently.
+
+**Use this project at your own risk.**
 
 ---
 
 # 📜 License
 
-MIT License
+This project is licensed under the MIT License.
+
+See the [`LICENSE`](LICENSE) file for the complete license text.
 

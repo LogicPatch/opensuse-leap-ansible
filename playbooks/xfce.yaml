@@ -56,6 +56,19 @@
         - xfce            # installiert XFCE komplett inklusive LightDM
         - displaymanager  # installiert bzw. wechselt nur den Displaymanager
         - desktop         # installiert alles rund um den Desktop.
+
+    #-------------------------------------------
+    # Alten Displaymanager-Alias entfernen
+    #-------------------------------------------
+    - name: Remove existing display-manager symlink
+      ansible.builtin.file:
+        path: /etc/systemd/system/display-manager.service
+        state: absent
+      tags:
+        - xfce
+        - displaymanager
+        - desktop
+
     #-------------------------------------------
     # LightDM Displaymanager aktivieren
     #-------------------------------------------

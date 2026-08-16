@@ -141,14 +141,6 @@
       when: base_system.laptop_optimization
       tags:
         - laptop
-    - name: Enable TLP power management
-      ansible.builtin.service:
-        name: tlp
-        enabled: true
-        state: started
-      when: base_system.laptop_optimization
-      tags:
-        - laptop
 
     # -----------------------------------
     # nvidia-driver

@@ -42,7 +42,7 @@
 #------------------------------------
 - name: Refresh third-party repositories
   ansible.builtin.command:
-    cmd: zypper --non-interactive refresh {{ application_packages[item].repository.alias }}
+    cmd: zypper --non-interactive --gpg-auto-import-keys refresh {{ application_packages[item].repository.alias }}
   changed_when: false
   loop: >-
     {{
