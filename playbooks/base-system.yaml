@@ -200,10 +200,6 @@
           - "The NVIDIA kernel module becomes available after reboot."
           - "Verify after reboot with:"
           - "sudo modinfo -F version nvidia"
-          #- "The NVIDIA kernel module becomes available after reboot."
-          #- "Reboot the system before using the NVIDIA driver."
-          #- "Verify the installation afterwards with:"
-          #- "modinfo -F version nvidia"
       when:
         - base_system.nvidia_driver
         - nvidia_repo.rc == 0
@@ -213,4 +209,9 @@
     - name: Debug NVIDIA version
       ansible.builtin.debug:
         var: nvidia_version
+      when:
+        - base_system.nvidia_driver
+        - nvidia_repo.rc == 0
+      tags:
+        - nvidia
   
