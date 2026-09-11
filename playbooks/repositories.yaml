@@ -17,6 +17,9 @@
         auto_import_keys: true
         state: present
       when: repositories.packman
+      tags:
+        - repositories
+        - packman
 
     # -----------------------------------
     # Multimedia Codecs Repositories
@@ -29,6 +32,13 @@
         auto_import_keys: true
         state: present
       when: repositories.codecs
+      tags:
+        - repositories
+        - codecs
+    
+    # -----------------------------------
+    # Videolan (libdvdcss)
+    # -----------------------------------
     - name: Add VideoLAN repository (libdvdcss)
       community.general.zypper_repository:
         name: videolan
@@ -37,6 +47,9 @@
         auto_import_keys: true
         state: present
       when: repositories.codecs
+      tags:
+        - repositories
+        - codecs
 
     # -----------------------------------
     # Nvidia Repository
@@ -49,12 +62,19 @@
         auto_import_keys: true
         state: present
       when: repositories.nvidia
+      tags:
+        - repositories
+        - nvidia
 
     # -----------------------------------
-    # Repository update & Packman-Vendor-Switch
+    # Repository update
     # -----------------------------------
     - name: Refresh repositories
-      command: zypper ref
+      ansible.builtin.command:
+        cmd: zypper ref
+      tags:
+        - repositories
+
     # -----------------------------------
     # Remove known multimedia conflicts
     # -----------------------------------
@@ -68,6 +88,7 @@
       tags:
         - repositories
         - packman
+
     # -----------------------------------
     # Vendor-Switch to Packman
     # -----------------------------------
@@ -82,6 +103,7 @@
       tags:
         - repositories
         - packman
+        
     # -----------------------------------
     # Normal Package-Update
     # -----------------------------------
@@ -93,7 +115,3 @@
       tags:
         - repositories
         - packman
-
-#    - name: Full distribution sync
-#      command: zypper dup -y --allow-vendor-change
-#      changed_when: false
