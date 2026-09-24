@@ -1,117 +1,88 @@
 themes_gtk:
-  - breeze5-wallpapers 
-  - deepin-gtk-theme 
-  - deepin-wallpapers 
-  - deepin-wallpapers-community 
-  - elementary-wallpapers 
+  - breeze5-wallpapers  
   - gnome-themes 
   - gnome-themes-extras 
   - gnome-themes-lang 
-  - gtk2-metatheme-adapta 
-  - gtk3-metatheme-adapta 
+  - gtk2-metatheme-adwaita 
+  - gtk3-metatheme-adwaita
   - gtk3-metatheme-ambiance 
-  - gtk2-metatheme-arc 
-  - gtk3-metatheme-arc 
   - gtk2-metatheme-bluebird 
   - gtk3-metatheme-bluebird 
-  - gtk3-metatheme-breeze 
-  - gtk2-metatheme-elementary 
-  - gtk3-metatheme-elementary 
-  - gtk2-metatheme-greybird 
+  - gtk3-metatheme-breeze
+  - gtk4-metatheme-dracula
+  - gtk3-metatheme-dracula 
+  - gtk4-metatheme-greybird 
   - gtk3-metatheme-greybird 
-  - gtk2-metatheme-greybird-geeko 
+  - gtk4-metatheme-greybird-geeko 
   - gtk3-metatheme-greybird-geeko 
-  - gtk3-metatheme-mint 
   - gtk3-metatheme-numix 
-  - gtk2-metatheme-paper 
-  - gtk3-metatheme-paper 
-  - gtk2-metatheme-vertex 
-  - gtk3-metatheme-vertex 
-  - gtk2-metatheme-yaru 
-  - gtk3-metatheme-yaru 
-  - metatheme-arc-common 
-  - metatheme-bluebird-common 
-  - metatheme-elementary-common 
+  - gtk2-metatheme-radiance
+  - gtk3-metatheme-radiance
+  - gtk2-metatheme-sonar 
+  - gtk4-metatheme-yaru-mate 
+  - gtk3-metatheme-yaru-mate
+  - materia-gtk-theme
+  - metatheme-adwaita-common
+  - metatheme-bluebird-common
+  - metatheme-breeze6-common
+  - metatheme-dracula-common 
   - metatheme-greybird-common 
-  - metatheme-greybird-geeko-common 
-  - metatheme-paper-common 
-  - metatheme-vertex-common 
-  - metatheme-yaru-common 
+  - metatheme-greybird-geeko-common
+  - metatheme-numix-common
+  - metatheme-radiance-common 
+  - metatheme-sonar-common 
+  - metatheme-yaru-mate-common 
   - mojave-gtk-theme 
-  - sierra-gtk-theme 
-  - wallpapers-openSUSE-extra 
-  - xfwm4-theme-adapta 
+  - wallpapers-openSUSE-extra
+  - xfwm4-branding-openSUSE
   - xfwm4-theme-dracula 
-  - xfwm4-theme-matcha
 
 themes_qt:
-  - adwaita-qt5 
-  - adwaita-qt6 
   - breeze5-wallpapers 
-  - deepin-wallpapers 
-  - deepin-wallpapers-community 
-  - elementary-wallpapers 
   - kde-theme-dracula 
   - lxqt-themes 
-  - lxqt-theme-openSUSE-default 
-  - lxqt-theme-openSUSE-leaper 
-  - lxqt-theme-openSUSE-light 
-  - plasma5-theme-openSUSE 
+  - plasma6-theme-openSUSE 
   - wallpapers-openSUSE-extra
 
 icons:
   - adwaita-icon-theme 
   - adwaita-xfce-icon-theme 
-  - arc-icon-theme 
-  - deepin-icon-theme 
-  - elementary-icon-theme 
   - elementary-xfce-icon-theme 
-  - faba-icon-theme 
   - faenza-icon-theme 
   - faenza-icon-theme-dark 
   - faenza-icon-theme-darker 
   - faenza-icon-theme-darkest 
   - faenza-icon-theme-mint 
-  - gnome-colors-icon-theme 
   - gnome-icon-theme 
-  - gnome-icon-theme-extras 
   - kora-icon-theme 
   - mint-x-icon-theme 
   - mint-y-icon-theme 
-  - moka-icon-theme 
-  - nimbus-icon-theme 
-  - paper-icon-theme 
   - papirus-icon-theme 
   - sonar-icon-theme 
-  - suru-plus-dark-icon-theme 
   - ubuntu-mate-icon-theme 
   - ubuntu-mono-icon-theme 
-  - yaru-icon-theme
 
 fonts:
   - adobe-sourcecodepro-fonts 
   - adobe-sourcesanspro-fonts 
   - adobe-sourceserifpro-fonts 
   - bitstream-vera-fonts 
-  - consoleet-terminus-fonts 
-  - courier-prime-fonts 
-  - fira-code-fonts 
   - fontawesome-fonts 
   - fontawesome-fonts-web 
-  - gnu-free-fonts 
-  - google-inconsolata-fonts 
+  - gnu-free-fonts
+  - google-droid-fonts
+  - google-noto-sans-fonts
+  - google-noto-serif-fonts
   - google-roboto-fonts 
-  - google-roboto-mono-fonts 
-  - google-roboto-slab-fonts
   - hack-fonts
   - iosevka-fonts 
-  - lato-fonts 
+  - lato-fonts
+  - mozilla-fira-fonts
   - noto-fonts 
   - noto-sans-fonts 
   - noto-sans-mono-fonts 
   - noto-serif-fonts 
   - terminus-bitmap-fonts 
-  - terminus-ttf-fonts 
   - ubuntu-fonts
 
 desktop_displaymanager:

@@ -20,6 +20,54 @@
       tags:
         - xfce          # installiert XFCE komplett inklusive LightDM
         - desktop       # installiert alles rund um den Desktop.
+    
+    #-------------------------------------------
+    # GTK-Themes installieren
+    #-------------------------------------------
+    - name: Install GTK themes
+      community.general.zypper:
+        name: "{{ themes_gtk }}"
+        state: present
+      when: desktop.themes_gtk
+      tags:
+        - themes
+        - desktop
+
+    #-------------------------------------------
+    # Qt-Themes installieren
+    #-------------------------------------------
+    - name: Install Qt themes
+      community.general.zypper:
+        name: "{{ themes_qt }}"
+        state: present
+      when: desktop.themes_qt
+      tags:
+        - themes
+        - desktop
+
+    #-------------------------------------------
+    # Icon-Themes installieren
+    #-------------------------------------------
+    - name: Install icon themes
+      community.general.zypper:
+        name: "{{ icons }}"
+        state: present
+      when: desktop.icons
+      tags:
+        - icons
+        - desktop
+
+    #-------------------------------------------
+    # Fonts installieren
+    #-------------------------------------------
+    - name: Install fonts
+      community.general.zypper:
+        name: "{{ fonts }}"
+        state: present
+      when: desktop.fonts
+      tags:
+        - fonts
+        - desktop
 
     #-------------------------------------------
     # lightdm-Displaymanager installieren
