@@ -22,7 +22,7 @@
         - desktop       # installiert alles rund um den Desktop.
     
     #-------------------------------------------
-    # GTK-Themes installieren
+    # Install GTK-Themes
     #-------------------------------------------
     - name: Install GTK themes
       community.general.zypper:
@@ -34,7 +34,7 @@
         - desktop
 
     #-------------------------------------------
-    # Qt-Themes installieren
+    # Install Qt-Themes
     #-------------------------------------------
     - name: Install Qt themes
       community.general.zypper:
@@ -46,7 +46,7 @@
         - desktop
 
     #-------------------------------------------
-    # Icon-Themes installieren
+    # Install Icon-Themes
     #-------------------------------------------
     - name: Install icon themes
       community.general.zypper:
@@ -58,7 +58,7 @@
         - desktop
 
     #-------------------------------------------
-    # Fonts installieren
+    # Install Fonts
     #-------------------------------------------
     - name: Install fonts
       community.general.zypper:
@@ -70,7 +70,7 @@
         - desktop
 
     #-------------------------------------------
-    # lightdm-Displaymanager installieren
+    # Install lightdm-Displaymanager
     #-------------------------------------------
     - name: Install desktop display manager
       community.general.zypper:
@@ -82,7 +82,7 @@
         - desktop         # installiert alles rund um den Desktop.
 
     #-------------------------------------------
-    # Andere Displaymanager deaktivieren
+    # Deactivate other Displaymanager
     #-------------------------------------------
     - name: Gather service facts
       ansible.builtin.service_facts:
@@ -108,7 +108,7 @@
         - desktop         # installiert alles rund um den Desktop.
 
     #-------------------------------------------
-    # Alten Displaymanager-Alias entfernen
+    # Remove old Displaymanager-Alias
     #-------------------------------------------
     - name: Remove existing display-manager symlink
       ansible.builtin.file:
@@ -120,7 +120,7 @@
         - desktop
 
     #-------------------------------------------
-    # LightDM Displaymanager aktivieren
+    # Activate LightDM Displaymanager
     #-------------------------------------------
     - name: Enable selected display manager
       ansible.builtin.systemd:
@@ -133,7 +133,7 @@
         - desktop         # installiert alles rund um den Desktop.
 
     #-------------------------------------------
-    # Dateimanager installieren
+    # Install Filemanager
     #-------------------------------------------
     - name: Install selected file managers
       community.general.zypper:
@@ -146,7 +146,7 @@
         - desktop
     
     #-------------------------------------------
-    # Kalenderapplication installieren
+    # Install Calendar-Application
     #-------------------------------------------
     - name: Install selected calendar applications
       community.general.zypper:
@@ -159,7 +159,7 @@
         - desktop
     
     #-------------------------------------------
-    # Editoren installieren
+    # Install Editor
     #-------------------------------------------
     - name: Install selected editors
       community.general.zypper:
@@ -172,7 +172,7 @@
         - desktop
     
     #-------------------------------------------
-    # Bildbetrachter installieren
+    # Install Image-Viewer
     #-------------------------------------------
     - name: Install selected image viewers
       community.general.zypper:
@@ -185,7 +185,7 @@
         - desktop
     
     #-------------------------------------------
-    # PDF-Reader installieren
+    # Install PDF-Reader
     #-------------------------------------------
     - name: Install selected PDF viewers
       community.general.zypper:
@@ -198,7 +198,7 @@
         - desktop
     
     #-------------------------------------------
-    # Screenshot-Programme installieren
+    # Install Screenshot-Application
     #-------------------------------------------
     - name: Install selected screenshot applications
       community.general.zypper:
